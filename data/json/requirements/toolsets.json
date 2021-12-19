@@ -120,7 +120,7 @@
     "type": "requirement",
     "//": "Soldering metal items",
     "tools": [ [ [ "soldering_iron", 1 ], [ "toolset", 1 ] ] ],
-    "components": [ [ [ "solder_wire", 1 ] ] ]
+    "components": [ [ [ "solder_wire", 1 ], [ "small_repairkit", 1 ] ] ]
   },
   {
     "id": "drilling_standard",
