@@ -67,6 +67,7 @@ cata::optional<int> xanax( Character *, item *, bool, const tripoint & );
 // TOOLS
 cata::optional<int> acidbomb_act( Character *, item *, bool, const tripoint & );
 cata::optional<int> adrenaline_injector( Character *, item *, bool, const tripoint & );
+cata::optional<int> animal_trap( Character *, item *, bool, const tripoint & );
 cata::optional<int> bell( Character *, item *, bool, const tripoint & );
 cata::optional<int> blood_draw( Character *, item *, bool, const tripoint & );
 cata::optional<int> boltcutters( Character *, item *, bool, const tripoint & );

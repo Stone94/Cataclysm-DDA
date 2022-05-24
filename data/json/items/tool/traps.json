@@ -251,5 +251,22 @@
       "practice": 3,
       "done_message": "You string up the tripwire."
     }
+  },
+  {
+    "id": "animal_trap",
+    "type": "TOOL",
+    "name": { "str": "plastic animal trap" },
+    "description": "test trap for wild game.",
+    "weight": "85 g",
+    "volume": "2 L",
+    "price": 500,
+    "price_postapoc": 50,
+    "to_hit": -2,
+    "material": [ "plastic" ],
+    "symbol": ";",
+    "color": "green",
+    "ammo": [ "fish_bait" ],
+    "pocket_data": [ { "pocket_type": "MAGAZINE", "ammo_restriction": { "fish_bait": 5 } } ],
+    "use_action": [ "WILD_GAME_TRAP" ]
   }
 ]

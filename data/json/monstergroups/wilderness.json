@@ -2999,5 +2999,53 @@
       { "monster": "mon_sparrow", "weight": 50, "cost_multiplier": 0 },
       { "monster": "mon_squirrel", "weight": 25, "cost_multiplier": 0 }
     ]
+  },
+  {
+    "type": "monstergroup",
+    "name": "GROUP_WILD_GAME",
+    "is_animal": true,
+    "monsters": [
+      {
+        "monster": "mon_boar_wild",
+        "weight": 4,
+        "cost_multiplier": 2,
+        "pack_size": [ 1 ],
+        "conditions": [ "DAY", "Night" ]
+      },
+      {
+        "monster": "mon_black_rat",
+        "weight": 10,
+        "cost_multiplier": 0,
+        "pack_size": [ 1 ],
+        "conditions": [ "DAY", "Night" ]
+      },
+      {
+        "monster": "mon_rabbit",
+        "weight": 15,
+        "cost_multiplier": 0,
+        "pack_size": [ 1, 5 ],
+        "conditions": [ "DUSK", "NIGHT", "DAWN" ]
+      },
+      {
+        "monster": "mon_coyote_wolf",
+        "weight": 2,
+        "cost_multiplier": 2,
+        "pack_size": [ 1, 8 ],
+        "conditions": [ "NIGHT" ]
+      },
+      { 
+        "monster": "mon_turkey", 
+        "weight": 6, 
+        "cost_multiplier": 2, 
+        "pack_size": [ 1 ] 
+      },
+      {
+        "monster": "mon_squirrel",
+        "weight": 50,
+        "cost_multiplier": 0,
+        "pack_size": [ 1, 2 ],
+        "conditions": [ "DAY" ]
+      }
+    ]
   }
 ]

@@ -1749,7 +1749,23 @@ cata::optional<int> iuse::remove_all_mods( Character *p, item *, bool, const tri
     }
     return 0;
 }
-
+static bool good_trapping_spot( const tripoint &pos, Character *p )
+{
+    std::unordered_set<tripoint> trappable_locations = g->get_trapping_locations( 60, pos );
+    std::vector<monster *> trappables = g->get_trappable_monsters( trappable_locations );
+    map &here = get_map();
+    // isolated little body of water with no definite fish population
+    // TODO: fix point types
+    const oter_id &cur_omt =
+        overmap_buffer.ter( tripoint_abs_omt( ms_to_omt_copy( here.getabs( pos ) ) ) );
+    std::string om_id = cur_omt.id().c_str();
+    if( trappables.empty() && !here.has_flag( ter_furn_flag::TFLAG_CURRENT, pos ) &&
+        om_id.find( "forest_" ) == std::string::npos && !cur_omt->is_wooded() ) {
+        p->add_msg_if_player( m_info, _( "You doubt you will have much luck catching game here." ) );
+        return false;
+    }
+    return true;
+}
 static bool good_fishing_spot( const tripoint &pos, Character *p )
 {
     std::unordered_set<tripoint> fishable_locations = g->get_fishable_locations( 60, pos );
@@ -1918,6 +1934,139 @@ cata::optional<int> iuse::fish_trap( Character *p, item *it, bool t, const tripo
                         //Also: corpses and comestibles do not rot in containers like this, but on the ground they will rot.
                         //we don't know when it was caught so use a random turn
                         here.add_item_or_charges( pos, item::make_corpse( fish_mon, it->birthday() + rng( 0_turns,
+                                                  3_hours ) ) );
+                        break; //this can happen only once
+                    }
+                }
+            }
+            it->ammo_consume( bait_consumed, pos, p );
+        }
+        return 0;
+    }
+}
+
+cata::optional<int> iuse::animal_trap( Character *p, item *it, bool t, const tripoint &pos )
+{
+    map &here = get_map();
+    if( !t ) {
+        // Handle deploying animal trap.
+        if( it->active ) {
+            it->active = false;
+            return 0;
+        }
+
+        if( p->is_mounted() ) {
+            p->add_msg_if_player( m_info, _( "You can't do that while mounted." ) );
+            return cata::nullopt;
+        }
+        if( p->is_underwater() ) {
+            p->add_msg_if_player( m_info, _( "You can't do that while underwater." ) );
+            return cata::nullopt;
+        }
+
+        if( it->ammo_remaining() == 0 ) {
+            p->add_msg_if_player( _( "Animals aren't likely to fall for this without bait." ) );
+            return cata::nullopt;
+        }
+
+        const cata::optional<tripoint> pnt_ = choose_adjacent( _( "Put animal trap where?" ) );
+        if( !pnt_ ) {
+            return cata::nullopt;
+        }
+        const tripoint pnt = *pnt_;
+
+        if( !here.has_flag( ter_furn_flag::TFLAG_TRAPPABLE, pnt ) ) {
+            p->add_msg_if_player( m_info, _( "You can't trap anything there!" ) );
+            return cata::nullopt;
+        }
+        //TODO: Check if the location is a good spot for traps, a fruit bearing bush or tree, maybe add a terrain option for game trails, animal dens or the like.
+//        if( !good_fishing_spot( pnt, p ) ) {
+//           return cata::nullopt;
+//        }
+        if( !good_trapping_spot( pnt, p ) ) {
+            return cata::nullopt;
+        }
+        it->active = true;
+        it->set_age( 0_turns );
+        here.add_item_or_charges( pnt, *it );
+        p->i_rem( it );
+        p->add_msg_if_player( m_info,
+                              _( "You place the animal trap; if your lucky you may catch some wild game." ) );
+
+        return 0;
+
+    } else {
+        // Handle processing animal trap over time.
+        if( it->ammo_remaining() == 0 ) {
+            it->active = false;
+            return 0;
+        }
+        //TODO: Unlike the fishing trap, it may take longer to catch game, 
+        if( it->age() > 24_hours ) {
+            it->active = false;
+
+            if( !here.has_flag( ter_furn_flag::TFLAG_TRAPPABLE, pos ) ) {
+                return 0;
+            }
+
+            int success = -50;
+            const int surv = p->get_skill_level( skill_survival );
+            const int attempts = rng( it->ammo_remaining(), it->ammo_remaining() * it->ammo_remaining() );
+            for( int i = 0; i < attempts; i++ ) {
+                /** @EFFECT_SURVIVAL randomly increases number of fish caught in fishing trap */
+                success += rng( surv, surv * surv );
+            }
+
+            int bait_consumed = rng( 0, it->ammo_remaining() + 1 );
+            if( bait_consumed > it->ammo_remaining() ) {
+                bait_consumed = it->ammo_remaining();
+            }
+            // TODO: Better name required
+            int wild_game = 0;
+
+            // Traps will only be set off once, better for the player to place multiple traps investing more calories and materials to get a return.
+            if( success < 0 ) {
+                wild_game = 0;
+            } else {
+                wild_game = 1;
+            }
+            // maybe the animal ran off with the bait without triggering the trap.
+            if( wild_game == 0 ) {
+                it->ammo_consume( it->ammo_remaining(), pos, p );
+                p->practice( skill_survival, rng( 5, 15 ) );
+
+                return 0;
+            }
+
+            //get the trappables around the trap's spot -> get_fishable_locations find definition
+            std::unordered_set<tripoint> trappable_locations = g->get_trappable_locations( 60, pos );
+            std::vector<monster *> trappables = g->get_trappable_monsters( trappable_locations );
+            for( int i = 0; i < wild_game; i++ ) {
+                p->practice( skill_survival, rng( 3, 10 ) );
+                if( !trappables.empty() ) {
+                    monster *chosen_wild_game = random_entry( trappables );
+                    // reduce the abstract wild_game_population marker of that wild game
+                    chosen_wild_game->wild_game_population -= 1;
+                    if( chosen_wild_game->wild_game_population <= 0 ) {
+                        g->catch_a_monster( chosen_wild_game, pos, p, 300_hours ); //catch the wild game!
+                    } else {
+                        here.add_item_or_charges( pos, item::make_corpse( chosen_wild_game->type->id,
+                                                  calendar::turn + rng( 0_turns,
+                                                          24_hours ) ) );
+                    }
+                } else {
+                    //there will always be a chance that the player will get lucky and catch some wild game
+                    //not existing in the wild games vector. (maybe it was in range, but wandered off)
+                    //lets say it is a 5% chance per animal to catch
+                    if( one_in( 20 ) ) {
+                        const std::vector<mtype_id> wild_game_group = MonsterGroupManager::GetMonstersFromGroup(
+                                    GROUP_WILD_GAME, true );
+                        const mtype_id &wild_game_mon = random_entry_ref( wild_game_group );
+                        //Yes, we can put animals in the trap,
+                        //and then get animals via activation of the item
+                        //Also: corpses and comestibles do not rot in containers like this, but on the ground they will rot.
+                        //we don't know when it was caught so use a random turn
+                        here.add_item_or_charges( pos, item::make_corpse( wild_game_mon, it->birthday() + rng( 0_turns,
                                                   3_hours ) ) );
                         break; //this can happen only once
                     }
