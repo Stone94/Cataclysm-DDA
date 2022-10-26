@@ -4,7 +4,7 @@
     "name": "Call of the Zone",
     "authors": [ "Stone"],
     "maintainers": [ "Stone" ],
-    "description": "Prior to the events of the Cataclysm, there were reports of strange phenomena occurring within the Chernobyl Exclusion Zone. The land surrounding Chernobyl had been warped and twisted by radiation, fauna mutated into fearsome beasts, physics defying anomalies which create wonderful and mysterious artifacts of varying abilities, and taken the lives of many inexperienced stalkers. The events of the Cataclysm disrupted the Zones existence, and caused it to rapidly expand and encompass the entire world. This mod aim's to merge the Stalker universe with Cataclysm Universe, containing new factions, enemies, locations and quests, as well as dangerous anomalies and artifacts with varying abilities. Now, get outta here stalker!",
+    "description": "Prior to the events of the Cataclysm, there were reports of strange phenomena occurring within the Chernobyl Exclusion Zone.  The land surrounding Chernobyl had been warped and twisted by radiation, fauna mutated into fearsome beasts, physics defying anomalies capable of creating wonderful and mysterious artifacts of varying abilities, and also bear great risk and danger have claimed the lives of many who would seek their fortune collecting them. \nThe events of the Cataclysm disrupted the Zones existence, and caused it to rapidly expand and encompass the entire world.  \nThis mod aim's to merge the Stalker universe with Cataclysm Universe, containing new factions, enemies, locations and quests, as well as dangerous anomalies and artifacts with varying abilities. \nNow, get outta here stalker!",
     "category": "content",
     "dependencies": [ "dda" ]
   }
