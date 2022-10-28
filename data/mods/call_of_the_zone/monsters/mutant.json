@@ -1,15 +1,15 @@
-{
+[
+  {
     "type": "MONSTER",
     "id": "mon_flesh",
     "name": { "str_sp": "flesh" },
     "species": "MUTANT",
     "default_faction": "flesh",
-    "looks_like": "mon_boar",
+    "looks_like": "mon_pig",
     "symbol": "F",
     "color": "red_white",
     "volume": "200 L",
     "weight": "200 kg",
-    "//": "When large weights and volumes are fixed this should be 5000 L and 5000 kg",
     "bodytype": "pig",
     "material": [ "flesh" ],
     "aggression": 50,
@@ -20,11 +20,11 @@
     "melee_skill": 2,
     "melee_dice": 4,
     "melee_dice_sides": 7,
-    "melee_damage": [ { "damage_type": "cut", "amount": 6 } ],
+    "melee_damage": [ { "damage_type": "cut", "amount": 12 } ],
     "armor_bash": 4,
     "armor_cut": 3,
     "armor_bullet": 2,
-    "families": [ "prof_intro_biology" ],
+    "families": [ "prof_wp_mutant", "prof_intro_biology" ],
     "weakpoint_sets": [ "wps_flesh_body" ],
     "hp": 150,
     "description": "This creature was once a pig, it has developed a protective layer of scales and bones, and evolved the ability to heal faster, grow significantly and their nervous system became more complex. A side benefit of this mutation is their enlarged eye, which can see in a greater spectrum of light and has olfactory receptors within, giving it the capability to smell with its enlarged eye.",
@@ -34,7 +34,252 @@
     "special_attacks": [ { "type": "bite", "cooldown": 5 }, [ "LUNGE", 5 ], [ "EAT_FOOD", 40 ] ],
     "flags": [ "SEES", "SMELLS", "HEARS", "ANIMAL", "PATH_AVOID_DANGER_1", "BASHES", "DESTROYS", "WARM", "KEENNOSE" ],
     "harvest": "mutant_mammal_leather",
-    "dissect": "dissect_dino_large_pred",
-    "anger_triggers": [ "STALK", "PLAYER_WEAK", "HURT", "PLAYER_CLOSE", "SOUND" ],
+    "anger_triggers": [ "STALK", "PLAYER_WEAK", "HURT", "PLAYER_CLOSE"],
     "categories": [ "MUTANT", "WILDLIFE" ]
   },
+  {
+    "id": "mon_flesh_piglet",
+    "type": "MONSTER",
+    "name": { "str": "fleshlet" },
+    "description": "A juvenile flesh.",
+    "default_faction": "flesh",
+    "bodytype": "pig",
+    "categories": [ "WILDLIFE" ],
+    "species": [ "MUTANT" ],
+    "volume": "15000 ml",
+    "weight": "20 kg",
+    "hp": 5,
+    "speed": 80,
+    "material": [ "flesh" ],
+    "symbol": "p",
+    "color": "pink",
+    "looks_like": "mon_pig",
+    "aggression": -10,
+    "morale": 10,
+    "melee_skill": 1,
+    "melee_dice": 1,
+    "melee_dice_sides": 2,
+    "melee_cut": 1,
+    "dodge": 4,
+    "harvest": "mutant_mammal_leather",
+    "path_settings": { "max_dist": 10 },
+    "fear_triggers": [ "SOUND", "PLAYER_CLOSE" ],
+    "upgrades": { "age_grow": 38, "into": "mon_flesh" },
+    "biosignature": { "biosig_item": "feces_manure", "biosig_timer": 7 },
+    "special_attacks": [ [ "EAT_FOOD", 40 ] ],
+    "flags": [ "SEES", "HEARS", "SMELLS", "ANIMAL", "PATH_AVOID_DANGER_1", "WARM", "KEENNOSE" ]
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_tushkano",
+    "name": { "str_sp": "tushkano" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_blind_dog",
+    "name": { "str_sp": "blind dog" },
+    "species": "MUTANT",
+    "default_faction": "dog",
+    "symbol": "d",
+    "color": "pink",
+    "looks_like": "mon_dog",
+    "description": "A mixed breed dog, it looks normal except for the missing fur and eyes.",
+    "//": "TODO: Write a better description later",
+    "volume": "25000 ml",
+    "weight": "25 kg",
+    "hp": 60,
+    "speed": 145,
+    "aggression": 75,
+    "morale": 70,
+    "melee_skill": 4,
+    "melee_dice_sides": 2,
+    "melee_damage": [ { "damage_type": "cut", "amount": 6 } ],
+    "reproduction": { "baby_monster": "mon_dog_blind_pup", "baby_count": 7, "baby_timer": 300 },
+    "baby_flags": [ "SPRING", "SUMMER" ],
+    "biosignature": { "biosig_item": "feces_manure", "biosig_timer": 1 },
+    "special_attacks": [ { "type": "bite", "cooldown": 5 } ],
+    "harvest": "mutant_mammal_leather",
+    "flags": [
+      "ANIMAL",
+      "HEARS",
+      "GOODHEARING",
+      "HIT_AND_RUN",
+      "KEENNOSE",
+      "PATH_AVOID_DANGER_1",
+      "SMELLS",
+      "SWARMS",
+      "WARM"
+    ]
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_dog_blind_pup",
+    "name": { "str_sp": "blind pup" },
+    "species": "MUTANT",
+    "default_faction": "dog",
+    "symbol": "d",
+    "color": "pink",
+    "looks_like": "mon_dog",
+    "description": "A small mixed breed pup, it looks like a normal puppy, adorable, until you see the blank features of its face, its missing eyes.",
+    "volume": "2500 ml",
+    "weight": "5 kg",
+    "hp": 35,
+    "speed": 110,
+    "aggression": 75,
+    "morale": 70,
+    "melee_skill": 4,
+    "melee_dice_sides": 2,
+    "melee_damage": [ { "damage_type": "cut", "amount": 2 } ],
+    "harvest": "mutant_mammal_leather",
+    "fear_triggers": [ "SOUND", "PLAYER_CLOSE" ],
+    "flags": [
+      "ANIMAL",
+      "HEARS",
+      "GOODHEARING",
+      "HIT_AND_RUN",
+      "KEENNOSE",
+      "PATH_AVOID_DANGER_1",
+      "SMELLS",
+      "WARM"
+    ]
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_pseudodog",
+    "name": { "str_sp": "pseudodog" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_burer",
+    "name": { "str_sp": "burer" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_bloodsucker",
+    "name": { "str_sp": "bloodsucker" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_psydog",
+    "name": { "str_sp": "psydog" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_tark",
+    "name": { "str_sp": "tark" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_mutant_wolf",
+    "name": { "str_sp": "mutated wolf" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_mutant_bear",
+    "name": { "str_sp": "mutated bear" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_fracture",
+    "name": { "str_sp": "fracture" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_lurker",
+    "name": { "str_sp": "lurker" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_vendigo",
+    "name": { "str_sp": "vendigo" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_tushkano",
+    "name": { "str_sp": "tushkano" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_borya",
+    "name": { "str_sp": "borya" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_zombified_stalker",
+    "name": { "str_sp": "zombified stalker" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_psysucker",
+    "name": { "str_sp": "psysucker" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_pseudogiant",
+    "name": { "str_sp": "pseudogiant" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_chimera",
+    "name": { "str_sp": "chimera" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_mutant_boar",
+    "name": { "str_sp": "large mutated boar" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_mutant_cat",
+    "name": { "str_sp": "mutant cat" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_poltergeist",
+    "name": { "str_sp": "poltergeist" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_snork",
+    "name": { "str_sp": "snork" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_controller",
+    "name": { "str_sp": "controller" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_karlik",
+    "name": { "str_sp": "tushkano" },
+    "species": "MUTANT"
+  },
+  {
+    "type": "MONSTER",
+    "id": "mon_lesser_burer",
+    "name": { "str_sp": "lesser burer" },
+    "species": "MUTANT"
+  }
+]
